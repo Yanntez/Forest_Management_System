@@ -2,7 +2,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./Forest_Management_System",
+        "./tests",
         "-p",
         "test_*.py"
     ],
