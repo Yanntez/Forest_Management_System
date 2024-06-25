@@ -3,10 +3,10 @@ import csv
 
 from Forest_Management_System.utils import health_status_mapping
 
-from .Forest import Forest
-from .Tree import Tree
-from .Path import Path
-from .Health_status import HealthStatus
+from Forest_Management_System.Forest import Forest
+from Forest_Management_System.Tree import Tree
+from Forest_Management_System.Path import Path
+from Forest_Management_System.Health_status import HealthStatus
 
 
 
