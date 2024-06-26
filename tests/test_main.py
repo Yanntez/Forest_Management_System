@@ -47,8 +47,8 @@ class TestForestManagementSystem(unittest.TestCase):
         self.assertEqual(self.tree1.health_status, HealthStatus.AT_RISK)
 
     def test_load_dataset(self):
-        trees_file = 'path/to/your/trees_file.csv'
-        paths_file = 'path/to/your/paths_file.csv'
+        trees_file = 'assets/forest_management_dataset-trees.csv'
+        paths_file = 'assets/forest_management_dataset-paths.csv'
         load_dataset(self.forest, trees_file, paths_file)
         self.assertGreater(len(self.forest.trees), 0)
         self.assertGreater(len(self.forest.paths), 0)
