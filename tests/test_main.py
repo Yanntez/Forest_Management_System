@@ -1,9 +1,9 @@
 import unittest
-from Forest import Forest
-from Tree import Tree
-from Path import Path
-from Health_status import HealthStatus
-from utils import load_dataset
+from Forest_Management_System.Forest import Forest
+from Forest_Management_System.Tree import Tree
+from Forest_Management_System.Path import Path
+from Forest_Management_System.Health_status import HealthStatus
+from Forest_Management_System.utils import load_dataset
 
 class TestForestManagementSystem(unittest.TestCase):
 
