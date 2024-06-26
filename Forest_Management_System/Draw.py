@@ -1,6 +1,6 @@
-# draw.py
 import networkx as nx
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider
 
 class Draw:
     @staticmethod
@@ -17,29 +17,52 @@ class Draw:
             G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=path.distance)
 
         # 创建一个图形窗口
-        plt.figure(figsize=(12, 12))  # 可以调整图形窗口的大小
+        fig, ax = plt.subplots(figsize=(12, 8))
+        plt.subplots_adjust(bottom=0.2)  # 调整子图布局以适应滑块
 
         # 为图形设置布局
         pos = nx.spring_layout(G, iterations=20)  # 增加迭代次数以优化布局
 
         # 绘制图形
-        nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='k',
-                 node_size=7000, font_size=12, font_weight='bold')
+        nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color='skyblue', node_size=5000)
+        edges = nx.draw_networkx_edges(G, pos, ax=ax, edge_color='k')
+        labels = nx.draw_networkx_labels(G, pos, ax=ax, font_size=12, font_weight='bold')
 
         # 显示节点的树种和健康状况
         for node in G.nodes:
             tree = G.nodes[node]['tree']
             # 将文本固定在节点的正上方
             text_position = (pos[node][0], pos[node][1] - 0.05)  # Y坐标上稍微偏移
-            plt.text(*text_position, f"{tree.species}\n{tree.health_status.name}",
-                     fontsize=10, ha='center', va='top', bbox=dict(facecolor='white', alpha=0.5))
+            ax.text(*text_position, f"{tree.species}\n{tree.health_status.name}",
+                    fontsize=10, ha='center', va='top', bbox=dict(facecolor='white', alpha=0.5))
 
         # 显示边的权重
         edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
 
-        # 调整布局以适应标签
-        plt.tight_layout()
+        # 添加缩放滑块
+        #axcolor = 'lightgoldenrodyellow'
+        #axzoom = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor=axcolor)
+        #zoom_slider = Slider(axzoom, 'Zoom', 0.1, 2.0, valinit=1.0)
+
+     #   def update(val):
+     #       scale = zoom_slider.val
+     #       ax.set_xlim([-scale, scale])
+     #       ax.set_ylim([-scale, scale])
+     #       fig.canvas.draw_idle()
+
+        #zoom_slider.on_changed(update)
+
+        # 处理滚轮缩放
+        def on_scroll(event):
+            scale_factor = 1.1
+            if event.button == 'up':
+                scale_factor = 1 / scale_factor
+            ax.set_xlim([x * scale_factor for x in ax.get_xlim()])
+            ax.set_ylim([y * scale_factor for y in ax.get_ylim()])
+            fig.canvas.draw_idle()
+
+        fig.canvas.mpl_connect('scroll_event', on_scroll)
 
         # 显示图形
         plt.show()
