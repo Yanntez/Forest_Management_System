@@ -1,6 +1,5 @@
 import csv
 from .Tree import Tree
-from .Forest import Forest
 from .Health_status import HealthStatus
 
 

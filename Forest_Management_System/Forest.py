@@ -1,6 +1,6 @@
-from .Tree import Tree
 from .Path import Path
 from .Health_status import HealthStatus
+from .Draw import Draw 
 
 class Forest:
     def __init__(self):
@@ -42,3 +42,7 @@ class Forest:
         result += "\nPaths:\n"
         result += "\n".join([str(path) for path in self.paths])
         return result
+
+    def display_graph(self):
+        # 使用Draw类的静态方法绘制森林图
+        Draw.draw(self)

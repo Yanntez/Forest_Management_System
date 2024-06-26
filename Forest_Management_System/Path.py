@@ -1,4 +1,3 @@
-from .Tree import Tree
 
 class Path:
     def __init__(self, tree1, tree2, distance):
