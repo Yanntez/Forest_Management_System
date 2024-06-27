@@ -1,6 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
 
 class Draw:
     @staticmethod

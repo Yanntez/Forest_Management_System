@@ -1,6 +1,6 @@
 from .Path import Path
-from .Health_status import HealthStatus
-from .Draw import Draw 
+from Forest_Management_System.logic.Health_status import HealthStatus
+from ..logic.Draw import Draw 
 
 class Forest:
     def __init__(self):

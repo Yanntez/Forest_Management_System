@@ -1,4 +1,4 @@
-from Forest_Management_System.Forest import Forest
+from Forest_Management_System.entity.Forest import Forest
 from Forest_Management_System.utils import load_dataset
 
 # Load dataset
