@@ -13,5 +13,6 @@ load_dataset(forest, trees_file, paths_file)
 # Display the forest
 print(forest)
 
+
 forest.display_graph()
 
