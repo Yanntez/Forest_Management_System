@@ -1,4 +1,4 @@
-from Forest_Management_System.logic import Infect
+from Forest_Management_System.logic.Infect import Infect
 from .Path import Path
 from Forest_Management_System.logic.Health_status import HealthStatus
 from ..logic.Draw import Draw 

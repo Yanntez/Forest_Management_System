@@ -23,9 +23,9 @@ class Draw:
         pos = nx.spring_layout(G, iterations=20)  # 增加迭代次数以优化布局
 
         # 绘制图形
-        nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color='skyblue', node_size=5000)
+        nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color='skyblue', node_size=1000)
         edges = nx.draw_networkx_edges(G, pos, ax=ax, edge_color='k')
-        labels = nx.draw_networkx_labels(G, pos, ax=ax, font_size=12, font_weight='bold')
+        labels = nx.draw_networkx_labels(G, pos, ax=ax, font_size=10, font_weight='bold')
 
         # 显示节点的树种和健康状况
         for node in G.nodes:
