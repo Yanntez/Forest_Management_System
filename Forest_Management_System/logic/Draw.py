@@ -39,19 +39,6 @@ class Draw:
         edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
 
-        # 添加缩放滑块
-        #axcolor = 'lightgoldenrodyellow'
-        #axzoom = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor=axcolor)
-        #zoom_slider = Slider(axzoom, 'Zoom', 0.1, 2.0, valinit=1.0)
-
-     #   def update(val):
-     #       scale = zoom_slider.val
-     #       ax.set_xlim([-scale, scale])
-     #       ax.set_ylim([-scale, scale])
-     #       fig.canvas.draw_idle()
-
-        #zoom_slider.on_changed(update)
-
         # 处理滚轮缩放
         def on_scroll(event):
             scale_factor = 1.1
