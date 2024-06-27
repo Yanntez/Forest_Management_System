@@ -47,7 +47,6 @@ def load_dataset(forest, trees_file, paths_file):
         print("Tree file columns:", reader.fieldnames)  # Print column names
  
         for row in reader:
-            print(row['tree_id'])
             tree_id = int(row['tree_id'])
             species = row['species']
             age = int(row['age'])

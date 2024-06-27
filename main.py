@@ -1,6 +1,5 @@
 from Forest_Management_System.entity.Forest import Forest
 from Forest_Management_System.utils import load_dataset
-import Forest_Management_System.Interface as st
 
 # Load dataset
 trees_file = 'assets/forest_management_dataset-trees.csv'
@@ -16,4 +15,4 @@ print(forest)
 
 
 forest.display_graph()
-#st.main(forest)
+
