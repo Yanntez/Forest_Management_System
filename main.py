@@ -14,9 +14,8 @@ load_dataset(forest, trees_file, paths_file)
 
 # Display the forest
 print(forest)
+print("================================================")
 
-#forest.remove_tree(3)
-#forest.display_graph()
 Draw.draw(forest)
 
 forest.simulate_infection_spread()

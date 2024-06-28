@@ -43,9 +43,6 @@ class Forest:
         result += "\n".join([str(path) for path in self.paths])
         return result
 
-    #def display_graph(self):
-        # 使用Draw类的静态方法绘制森林图
-        #Draw.draw(self)
 
     def simulate_infection_spread(self):
         Infect.spread_infection(self)
