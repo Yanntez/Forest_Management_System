@@ -67,10 +67,13 @@ class Draw:
         # 定义按钮的回调函数
         def add_tree(event):
             tree_id = simpledialog.askinteger("Add", "Enter tree ID:")
+            if tree_id is None:return
             species = simpledialog.askstring("Add", "Enter tree species:")
+            if species is None:return
             age = simpledialog.askinteger("Add", "Enter tree age:")
+            if age is None:return
             health_status = simpledialog.askstring("Add", "Enter tree health status (HEALTHY, INFECTED, AT_RISK):")
-    
+            if health_status is None:return
             if tree_id is not None and species and age is not None and health_status:
                 health_status_enum = HealthStatus[health_status.upper()]
                 tree = Tree(tree_id, species, age, health_status_enum)
@@ -88,7 +91,9 @@ class Draw:
 
         def add_path(event):
             tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            if tree_id1 is None:return
             tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
+            if tree_id2 is None:return
             distance = simpledialog.askinteger("Path", "Enter distance:")
             if tree_id1 and distance and tree_id2 is not None:
                 forest.add_path( tree_id1, tree_id2, distance)
@@ -97,6 +102,7 @@ class Draw:
             
         def remove_path(event):
             tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            if tree_id1 is None:return
             tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
             if tree_id1 and tree_id2 is not None:
                 forest.remove_path( tree_id1, tree_id2)
@@ -105,6 +111,7 @@ class Draw:
 
         def pathfinding(event):
             tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            if tree_id1 is None:return
             tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
             if tree_id1 and tree_id2 is not None:
                 way=Path.dijkstra_shortest_path(forest,tree_id1,tree_id2)
@@ -153,6 +160,3 @@ class Draw:
         # 显示图形
         plt.show()
 
-# 测试代码
-# forest = Forest()  # 假设你已经有一个Forest实例
-# Draw.draw(forest)
