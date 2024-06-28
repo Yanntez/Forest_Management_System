@@ -46,7 +46,7 @@ class Draw:
                 tree = G.nodes[node]['tree']
                 # 将文本固定在节点的正上方
                 text_position = (pos[node][0], pos[node][1] - 0.05)  # Y坐标上稍微偏移
-                ax.text(*text_position, f"{tree.species}\n{tree.health_status.name}",
+                ax.text(*text_position, f"{tree.species}\nAge:{tree.age}",
                         fontsize=10, ha='center', va='top', bbox=dict(facecolor='white', alpha=0.5))
 
             # 显示边的权重
@@ -56,8 +56,10 @@ class Draw:
             fig.canvas.draw_idle()
 
         # 创建一个图形窗口
-        fig, ax = plt.subplots(figsize=(15, 9))
+        fig, ax = plt.subplots(figsize=(12, 7))
         plt.subplots_adjust(bottom=0.15)  # 调整子图布局以适应按钮
+
+        #ax_text = plt.axes([0.1, 0.9, 0.08, 0.05])
 
         draw_graph()  # 初次绘制图形
 
@@ -82,22 +84,45 @@ class Draw:
                 draw_graph()
                 messagebox.showinfo("Success", "Tree removed successfully!")
 
+
+        def add_path(event):
+            tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
+            distance = simpledialog.askinteger("Path", "Enter distance:")
+            if tree_id1 and distance and tree_id2 is not None:
+                forest.add_path( tree_id1, tree_id2, distance)
+                draw_graph()
+                messagebox.showinfo("Success", "Path Add successfully!")
+            
+        def remove_path(event):
+            tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
+            if tree_id1 and tree_id2 is not None:
+                forest.remove_path( tree_id1, tree_id2)
+                draw_graph()
+                messagebox.showinfo("Success", "Path Remove successfully!")
+
         def refresh(event):
             draw_graph()
 
         # 添加按钮
         ax_add_tree = plt.axes([0.1, 0.05, 0.08, 0.05])
         ax_remove_tree = plt.axes([0.2, 0.05, 0.08, 0.05])
-        ax_refresh = plt.axes([0.3, 0.05, 0.08, 0.05])
+        ax_add_path = plt.axes([0.3, 0.05, 0.08, 0.05])
+        ax_remove_path = plt.axes([0.4, 0.05, 0.08, 0.05])
+        ax_refresh = plt.axes([0.5, 0.05, 0.08, 0.05])
 
         btn_add_tree = Button(ax_add_tree, 'Add Tree')
         btn_remove_tree = Button(ax_remove_tree, 'Remove Tree')
+        btn_addpath = Button(ax_add_path, 'Add Path')
+        btn_removepath = Button(ax_remove_path, 'Remove Path')
         btn_refresh = Button(ax_refresh, 'Refresh')
 
         btn_add_tree.on_clicked(add_tree)
         btn_remove_tree.on_clicked(remove_tree)
+        btn_addpath.on_clicked(add_path)
+        btn_removepath.on_clicked(remove_path)
         btn_refresh.on_clicked(refresh)
-        
 
         # 处理滚轮缩放
         def on_scroll(event):
