@@ -1,5 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Button
+
+from Forest_Management_System.logic.Health_status import HealthStatus
 
 class Draw:
     @staticmethod
@@ -17,13 +20,21 @@ class Draw:
 
         # 创建一个图形窗口
         fig, ax = plt.subplots(figsize=(12, 8))
-        plt.subplots_adjust(bottom=0.2)  # 调整子图布局以适应滑块
+        plt.subplots_adjust(bottom=0.15)  # 调整子图布局以适应按钮
 
         # 为图形设置布局
         pos = nx.spring_layout(G, iterations=20)  # 增加迭代次数以优化布局
 
+        health_color_map = {
+            HealthStatus.HEALTHY: 'green',
+            HealthStatus.INFECTED: 'red',
+            HealthStatus.AT_RISK: 'orange'
+        }
+
         # 绘制图形
-        nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color='skyblue', node_size=1000)
+        node_colors = [health_color_map.get(tree.health_status, 'gray') for tree_id, tree in forest.trees.items()]
+        print(node_colors)
+        nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color=node_colors, node_size=1000)
         edges = nx.draw_networkx_edges(G, pos, ax=ax, edge_color='k')
         labels = nx.draw_networkx_labels(G, pos, ax=ax, font_size=10, font_weight='bold')
 
@@ -39,7 +50,38 @@ class Draw:
         edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
 
-        # 处理滚轮缩放
+        # 定义按钮的回调函数
+        def zoom_in(event):
+            scale_factor = 1.1
+            ax.set_xlim([x / scale_factor for x in ax.get_xlim()])
+            ax.set_ylim([y / scale_factor for y in ax.get_ylim()])
+            fig.canvas.draw_idle()
+
+        def zoom_out(event):
+            scale_factor = 1.1
+            ax.set_xlim([x * scale_factor for x in ax.get_xlim()])
+            ax.set_ylim([y * scale_factor for y in ax.get_ylim()])
+            fig.canvas.draw_idle()
+
+        def add_tree(event):
+            scale_factor = 1.1
+            ax.set_xlim([x * scale_factor for x in ax.get_xlim()])
+            ax.set_ylim([y * scale_factor for y in ax.get_ylim()])
+            fig.canvas.draw_idle()
+
+        # 添加按钮
+        ax_zoom_in = plt.axes([0.8, 0.05, 0.08, 0.05])
+        ax_zoom_out = plt.axes([0.7, 0.05, 0.08, 0.05])
+        btn_zoom_in = Button(ax_zoom_in, 'Zoom In')
+        btn_zoom_out = Button(ax_zoom_out, 'Zoom Out')
+        btn_zoom_in.on_clicked(zoom_in)
+        btn_zoom_out.on_clicked(zoom_out)
+
+        ax_add_tree = plt.axes([0.60, 0.05, 0.08, 0.05])
+        btn_add_tree = Button(ax_add_tree, 'Add Tree')
+        btn_add_tree.on_clicked(add_tree)
+
+# 处理滚轮缩放
         def on_scroll(event):
             scale_factor = 1.1
             if event.button == 'up':
@@ -49,6 +91,7 @@ class Draw:
             fig.canvas.draw_idle()
 
         fig.canvas.mpl_connect('scroll_event', on_scroll)
+
 
         # 显示图形
         plt.show()
