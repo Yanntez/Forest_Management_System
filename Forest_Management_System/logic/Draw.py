@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 from Forest_Management_System.logic.Health_status import HealthStatus
-from Forest_Management_System.entity.Forest import Forest
+from Forest_Management_System.entity.Path import Path
 from Forest_Management_System.entity.Tree import Tree
 
 class Draw:
@@ -35,6 +35,9 @@ class Draw:
                 HealthStatus.AT_RISK: 'orange'
             }
 
+            handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, markersize=10, markerfacecolor=color) for label, color in health_color_map.items()]
+            ax.legend(handles=handles, loc='upper left', title="Legend")
+
             # 绘制图形
             node_colors = [health_color_map.get(tree.health_status, 'gray') for tree_id, tree in forest.trees.items()]
             nodes = nx.draw_networkx_nodes(G, pos, ax=ax, node_color=node_colors, node_size=1000)
@@ -58,9 +61,7 @@ class Draw:
         # 创建一个图形窗口
         fig, ax = plt.subplots(figsize=(12, 7))
         plt.subplots_adjust(bottom=0.15)  # 调整子图布局以适应按钮
-
-        #ax_text = plt.axes([0.1, 0.9, 0.08, 0.05])
-
+        fig.canvas.manager.set_window_title('Forest Management System')
         draw_graph()  # 初次绘制图形
 
         # 定义按钮的回调函数
@@ -102,6 +103,17 @@ class Draw:
                 draw_graph()
                 messagebox.showinfo("Success", "Path Remove successfully!")
 
+        def pathfinding(event):
+            tree_id1 = simpledialog.askinteger("Path", "Enter tree ID1:")
+            tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
+            if tree_id1 and tree_id2 is not None:
+                way=Path.dijkstra_shortest_path(forest,tree_id1,tree_id2)
+                print(Path.dijkstra_shortest_path(forest,tree_id1,tree_id2))
+                if way[0] == float('inf'):
+                    messagebox.showinfo("Dijkstra","No path found from the start to the end.")
+                else:
+                    messagebox.showinfo("Dijkstra", f"The shortest path length is:{way[0]}\nThe Path is:{way[1]}")
+
         def refresh(event):
             draw_graph()
 
@@ -111,18 +123,21 @@ class Draw:
         ax_add_path = plt.axes([0.3, 0.05, 0.08, 0.05])
         ax_remove_path = plt.axes([0.4, 0.05, 0.08, 0.05])
         ax_refresh = plt.axes([0.5, 0.05, 0.08, 0.05])
+        ax_path_finding = plt.axes([0.6, 0.05, 0.08, 0.05])
 
         btn_add_tree = Button(ax_add_tree, 'Add Tree')
         btn_remove_tree = Button(ax_remove_tree, 'Remove Tree')
         btn_addpath = Button(ax_add_path, 'Add Path')
         btn_removepath = Button(ax_remove_path, 'Remove Path')
         btn_refresh = Button(ax_refresh, 'Refresh')
+        btn_pathfinding = Button(ax_path_finding, 'Path Finding')
 
         btn_add_tree.on_clicked(add_tree)
         btn_remove_tree.on_clicked(remove_tree)
         btn_addpath.on_clicked(add_path)
         btn_removepath.on_clicked(remove_path)
         btn_refresh.on_clicked(refresh)
+        btn_pathfinding.on_clicked(pathfinding)
 
         # 处理滚轮缩放
         def on_scroll(event):
