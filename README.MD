@@ -4,7 +4,7 @@ Efrei course assignment
 #  Display
 2024/6/28 version
 You can check our feature design sources on this website
-https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993
+[111](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
 All of these functions have been implemented, and some of them have not been reflected in the interface yet. Only console output is supported, and we will improve it in the next few days.
 ![2024/6/28 version](image.png)
 ![2](image-1.png)
