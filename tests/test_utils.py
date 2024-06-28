@@ -1,8 +1,5 @@
 import unittest
 from unittest.mock import patch, mock_open
-from io import StringIO
-import csv
-from Forest_Management_System.entity.Tree import Tree
 from Forest_Management_System.logic.Health_status import HealthStatus
 from Forest_Management_System.utils import load_dataset, health_status_mapping
 
