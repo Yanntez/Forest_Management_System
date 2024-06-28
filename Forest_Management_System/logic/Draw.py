@@ -1,9 +1,11 @@
+from tkinter import messagebox, simpledialog
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 from Forest_Management_System.logic.Health_status import HealthStatus
 from Forest_Management_System.entity.Forest import Forest
+from Forest_Management_System.entity.Tree import Tree
 
 class Draw:
     @staticmethod
@@ -61,12 +63,24 @@ class Draw:
 
         # 定义按钮的回调函数
         def add_tree(event):
-
-            draw_graph()
+            tree_id = simpledialog.askinteger("Add", "Enter tree ID:")
+            species = simpledialog.askstring("Add", "Enter tree species:")
+            age = simpledialog.askinteger("Add", "Enter tree age:")
+            health_status = simpledialog.askstring("Add", "Enter tree health status (HEALTHY, INFECTED, AT_RISK):")
+    
+            if tree_id is not None and species and age is not None and health_status:
+                health_status_enum = HealthStatus[health_status.upper()]
+                tree = Tree(tree_id, species, age, health_status_enum)
+                forest.add_tree(tree)
+                draw_graph()
+                messagebox.showinfo("Success", "Tree added successfully!")
 
         def remove_tree(event):
-            Forest.remove_tree(forest,3)
-            draw_graph()
+             tree_id = simpledialog.askinteger("Remove", "Enter tree ID to remove:")
+             if tree_id is not None:
+                forest.remove_tree(tree_id)
+                draw_graph()
+                messagebox.showinfo("Success", "Tree removed successfully!")
 
         def refresh(event):
             draw_graph()
