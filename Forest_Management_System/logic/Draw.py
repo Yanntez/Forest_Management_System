@@ -3,10 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 from Forest_Management_System.logic.Health_status import HealthStatus
+from Forest_Management_System.entity.Forest import Forest
 
 class Draw:
     @staticmethod
     def draw(forest):
+
         # 创建一个无向图
         G = nx.Graph()
 
@@ -64,9 +66,8 @@ class Draw:
             fig.canvas.draw_idle()
 
         def add_tree(event):
-            scale_factor = 1.1
-            ax.set_xlim([x * scale_factor for x in ax.get_xlim()])
-            ax.set_ylim([y * scale_factor for y in ax.get_ylim()])
+            
+            
             fig.canvas.draw_idle()
 
         # 添加按钮

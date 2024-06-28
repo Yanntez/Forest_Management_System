@@ -1,6 +1,7 @@
 from Forest_Management_System.entity.Forest import Forest
 from Forest_Management_System.utils import load_dataset
 from Forest_Management_System.entity.Path import Path
+from Forest_Management_System.logic.Draw import Draw
 
 # Load dataset
 trees_file = 'assets/forest_management_dataset-trees.csv'
@@ -14,8 +15,9 @@ load_dataset(forest, trees_file, paths_file)
 # Display the forest
 print(forest)
 
-
-forest.display_graph()
+#forest.remove_tree(3)
+#forest.display_graph()
+Draw.draw(forest)
 
 forest.simulate_infection_spread()
 

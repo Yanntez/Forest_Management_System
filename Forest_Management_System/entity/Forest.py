@@ -1,7 +1,6 @@
 from Forest_Management_System.logic.Infect import Infect
 from .Path import Path
 from Forest_Management_System.logic.Health_status import HealthStatus
-from ..logic.Draw import Draw 
 
 class Forest:
     def __init__(self):
@@ -44,9 +43,9 @@ class Forest:
         result += "\n".join([str(path) for path in self.paths])
         return result
 
-    def display_graph(self):
+    #def display_graph(self):
         # 使用Draw类的静态方法绘制森林图
-        Draw.draw(self)
+        #Draw.draw(self)
 
     def simulate_infection_spread(self):
         Infect.spread_infection(self)
