@@ -20,8 +20,3 @@ Draw.draw(forest)
 
 forest.simulate_infection_spread()
 
- # Example of using Dijkstra's algorithm to find shortest path distance
-start_tree_id = 3
-end_tree_id = 5
-shortest_distance = Path.dijkstra_shortest_path(forest,start_tree_id, end_tree_id)
-print(f"Shortest distance from tree {start_tree_id} to tree {end_tree_id}: {shortest_distance}")
