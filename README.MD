@@ -17,7 +17,7 @@ Terminal:
 # Forest Management System Mid-term Report
 
 ## Installation Guide
-1. **从main分支当中下载全部源文件**
+1. **Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.**
 
 
 
