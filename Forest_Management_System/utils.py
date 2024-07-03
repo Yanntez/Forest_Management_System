@@ -1,6 +1,6 @@
 import csv
 from .entity.Tree import Tree
-from .logic.Health_status import HealthStatus
+from .entity.Health_status import HealthStatus
 
 
 def health_status_mapping(status_str):

@@ -7,7 +7,7 @@ import random as seednum
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
-from Forest_Management_System.logic.Health_status import HealthStatus
+from Forest_Management_System.entity.Health_status import HealthStatus
 from Forest_Management_System.entity.Path import Path
 from Forest_Management_System.entity.Tree import Tree
 
@@ -100,6 +100,8 @@ class Draw:
                             arrowprops=dict(arrowstyle="->"))
         annot.set_visible(False)
 
+        
+                
         def add_tree(event):
             tree_id = simpledialog.askinteger("Add", "Enter tree ID:")
             if tree_id is None: return
@@ -177,8 +179,18 @@ class Draw:
             if speed is None: return
             thread = threading.Thread(target=simulate_multiple_infections,args=(speed,))
             thread.start()
-                
 
+        
+        def conservation_areas(event):
+            conservation_areas = forest.find_conservation_areas()
+            area_count=0
+            text=""
+            for area in conservation_areas:
+                area_count += 1
+                if area_count != 1 : text += "\n"
+                text += f"Conservation Areas {area_count}:{area}"
+                
+            messagebox.showinfo("Conservation Areas", text)
 
 
         def refresh(event):
@@ -187,13 +199,17 @@ class Draw:
             G, pos, nodes = draw_graph()
             
 
-        ax_add_tree = plt.axes([0.1, 0.05, 0.08, 0.05])
-        ax_remove_tree = plt.axes([0.2, 0.05, 0.08, 0.05])
-        ax_add_path = plt.axes([0.3, 0.05, 0.08, 0.05])
-        ax_remove_path = plt.axes([0.4, 0.05, 0.08, 0.05])
-        ax_refresh = plt.axes([0.5, 0.05, 0.08, 0.05])
-        ax_path_finding = plt.axes([0.6, 0.05, 0.08, 0.05])
-        ax_spread_infection = plt.axes([0.7, 0.05, 0.12, 0.05])
+        ax_conservation_areas = plt.axes([0.14, 0.91, 0.13, 0.05])
+
+
+        ax_add_tree = plt.axes([0.14, 0.05, 0.08, 0.05])
+        ax_remove_tree = plt.axes([0.24, 0.05, 0.08, 0.05])
+        ax_add_path = plt.axes([0.34, 0.05, 0.08, 0.05])
+        ax_remove_path = plt.axes([0.44, 0.05, 0.09, 0.05])
+        ax_refresh = plt.axes([0.55, 0.05, 0.08, 0.05])
+        ax_path_finding = plt.axes([0.65, 0.05, 0.08, 0.05])
+        ax_spread_infection = plt.axes([0.75, 0.05, 0.13, 0.05])
+
 
         btn_add_tree = Button(ax_add_tree, 'Add Tree')
         btn_remove_tree = Button(ax_remove_tree, 'Remove Tree')
@@ -202,6 +218,7 @@ class Draw:
         btn_refresh = Button(ax_refresh, 'Refresh')
         btn_pathfinding = Button(ax_path_finding, 'Path Finding')
         btn_spread_infection = Button(ax_spread_infection, 'Infection Simulation')
+        btn_conservation_areas = Button(ax_conservation_areas, ' Conservation Areas')
 
         btn_add_tree.on_clicked(add_tree)
         btn_remove_tree.on_clicked(remove_tree)
@@ -210,6 +227,7 @@ class Draw:
         btn_refresh.on_clicked(refresh)
         btn_pathfinding.on_clicked(pathfinding)
         btn_spread_infection.on_clicked(spread_infection)
+        btn_conservation_areas.on_clicked(conservation_areas)
 
         def on_scroll(event):
             scale_factor = 1.1

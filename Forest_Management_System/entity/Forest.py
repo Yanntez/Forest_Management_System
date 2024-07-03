@@ -1,6 +1,6 @@
 from Forest_Management_System.logic.Infect import Infect
 from .Path import Path
-from Forest_Management_System.logic.Health_status import HealthStatus
+from Forest_Management_System.entity.Health_status import HealthStatus
 
 class Forest:
     def __init__(self):
@@ -52,3 +52,30 @@ class Forest:
 
     def simulate_infection_spread(self):
         Infect.spread_infection(self)
+
+    def find_conservation_areas(self):
+        visited = set()
+        conservation_areas = []
+
+        def dfs(tree_id):
+            stack = [tree_id]
+            component = []
+            while stack:
+                current_id = stack.pop()
+                if current_id not in visited:
+                    visited.add(current_id)
+                    component.append(current_id)
+                    for path in self.paths:
+                        if path.tree1.tree_id == current_id and path.tree2.tree_id not in visited and self.trees[path.tree2.tree_id].health_status == HealthStatus.HEALTHY:
+                            stack.append(path.tree2.tree_id)
+                        elif path.tree2.tree_id == current_id and path.tree1.tree_id not in visited and self.trees[path.tree1.tree_id].health_status == HealthStatus.HEALTHY:
+                            stack.append(path.tree1.tree_id)
+            return component
+
+        for tree_id, tree in self.trees.items():
+            if tree.health_status == HealthStatus.HEALTHY and tree_id not in visited:
+                area = dfs(tree_id)
+                if area:
+                    conservation_areas.append(area)
+
+        return conservation_areas

@@ -1,5 +1,5 @@
 import unittest
-from Forest_Management_System.logic.Health_status import HealthStatus
+from entity.Health_status import HealthStatus
 from Forest_Management_System.entity.Tree import Tree  
 
 class TestTree(unittest.TestCase):

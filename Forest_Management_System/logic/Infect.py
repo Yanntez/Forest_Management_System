@@ -1,5 +1,5 @@
 from collections import deque
-from Forest_Management_System.logic.Health_status import HealthStatus
+from Forest_Management_System.entity.Health_status import HealthStatus
 
 class Infect:
     @staticmethod

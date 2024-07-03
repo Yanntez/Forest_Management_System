@@ -1,4 +1,4 @@
-from ..logic.Health_status import HealthStatus
+from .Health_status import HealthStatus
 
 class Tree:
     def __init__(self, tree_id, species, age, health_status):
