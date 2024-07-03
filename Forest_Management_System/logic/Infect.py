@@ -4,49 +4,71 @@ from Forest_Management_System.logic.Health_status import HealthStatus
 class Infect:
     @staticmethod
     def spread_infection(forest):
-        print("Start simulating the contagion process(BFS):")
-        # 初始化传染轮次
-        spread_round = 0
+        print("Simulating one step of the contagion process (BFS):")
 
-        infected_trees = [tree.tree_id for tree_id, tree in forest.trees.items() if tree.health_status == HealthStatus.INFECTED]
-        
-        if not infected_trees:
-            print("No infected trees found. No spread will occur.")
-            return
+        if not hasattr(Infect, 'queue'):
+            Infect.queue = deque(tree.tree_id for tree_id, tree in forest.trees.items() if tree.health_status == HealthStatus.INFECTED)
+            Infect.visited = set(Infect.queue)
+            Infect.spread_round = 0
 
-        queue = deque(infected_trees)
-        visited = set(infected_trees)
+        if not Infect.queue:
+            recheck_queue = deque(tree.tree_id for tree_id, tree in forest.trees.items() if tree.health_status == HealthStatus.INFECTED)
+            recheck_found_infection = False
 
-        while queue:
-            # 每开始一轮新的传染，首先打印轮次标题
-            spread_round += 1
-            print(f"ROUND {spread_round}:")
-            
-            # 创建一个新队列以存储本轮传播的树
-            next_round_queue = deque()
-
-            while queue:
-                current_tree_id = queue.popleft()  # 从队列中取出当前树的ID
-                current_tree = forest.trees[current_tree_id]
-
-                # 遍历森林中的所有路径，寻找相邻的树
+            while recheck_queue:
+                current_tree_id = recheck_queue.popleft()
                 for path in forest.paths:
-                    # 检查当前路径是否连接当前树和未访问的树
-                    if (path.tree1.tree_id == current_tree_id and path.tree2.tree_id not in visited):
+                    neighbor_id = None
+                    if path.tree1.tree_id == current_tree_id and path.tree2.tree_id not in Infect.visited:
                         neighbor_id = path.tree2.tree_id
-                    elif (path.tree2.tree_id == current_tree_id and path.tree1.tree_id not in visited):
+                    elif path.tree2.tree_id == current_tree_id and path.tree1.tree_id not in Infect.visited:
                         neighbor_id = path.tree1.tree_id
 
-                    # 如果邻居树未被访问且健康状况不是INFECTED，则进行感染
-                    if neighbor_id not in visited and forest.trees[neighbor_id].health_status != HealthStatus.INFECTED:
-                        visited.add(neighbor_id)
+                    if neighbor_id is not None and forest.trees[neighbor_id].health_status != HealthStatus.INFECTED:
+                        Infect.visited.add(neighbor_id)
                         forest.trees[neighbor_id].health_status = HealthStatus.INFECTED
-                        next_round_queue.append(neighbor_id)  # 为下一轮传播添加树
+                        Infect.queue.append(neighbor_id)
                         print(f"Infection spreads to Tree ID {neighbor_id} from Tree ID {current_tree_id}.")
+                        recheck_found_infection = True
+                        return
 
-            queue = next_round_queue  # 准备下一轮传播
+                if recheck_found_infection:
+                    break
 
-        # 完成传播后，输出最终的森林状态
-        print("Infection spread simulation complete. Final forest state:")
+            if not recheck_found_infection:
+                print("No more infections possible. Simulation complete.")
+                return
+        
+        Infect.spread_round += 1
+        print(f"ROUND {Infect.spread_round}:")
+
+        if not Infect.queue:
+            print("No more trees in the queue to process.")
+            return
+
+        print(f"Current infection queue: {list(Infect.queue)}")
+
+        current_tree_id = Infect.queue.popleft()
+        infected_this_round = False
+
+        for path in forest.paths:
+            neighbor_id = None
+            if path.tree1.tree_id == current_tree_id and path.tree2.tree_id not in Infect.visited:
+                neighbor_id = path.tree2.tree_id
+            elif path.tree2.tree_id == current_tree_id and path.tree1.tree_id not in Infect.visited:
+                neighbor_id = path.tree1.tree_id
+
+            if neighbor_id is not None and forest.trees[neighbor_id].health_status != HealthStatus.INFECTED:
+                Infect.visited.add(neighbor_id)
+                forest.trees[neighbor_id].health_status = HealthStatus.INFECTED
+                Infect.queue.append(neighbor_id)
+                print(f"Infection spreads to Tree ID {neighbor_id} from Tree ID {current_tree_id}.")
+                infected_this_round = True
+                break
+
+        if not infected_this_round:
+            print(f"No infection spread from Tree ID {current_tree_id} in this round. Retrying...")
+
+        print("Current forest state:")
         for tree in forest.trees.values():
             print(tree)

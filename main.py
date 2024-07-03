@@ -1,6 +1,5 @@
 from Forest_Management_System.entity.Forest import Forest
 from Forest_Management_System.utils import load_dataset
-from Forest_Management_System.entity.Path import Path
 from Forest_Management_System.logic.Draw import Draw
 
 # Load dataset
@@ -18,5 +17,5 @@ print("================================================")
 
 Draw.draw(forest)
 
-forest.simulate_infection_spread()
+
 

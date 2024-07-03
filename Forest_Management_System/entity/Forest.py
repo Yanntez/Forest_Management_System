@@ -44,5 +44,11 @@ class Forest:
         return result
 
 
+    def print_forest_status(self, current_time):
+        print(f"Time: {current_time}")
+        for tree_id, tree in self.trees.items():
+            print(f"Tree ID: {tree_id}, Health Status: {tree.health_status.name}")
+        print("-----")
+
     def simulate_infection_spread(self):
         Infect.spread_infection(self)

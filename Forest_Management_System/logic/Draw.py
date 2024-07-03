@@ -1,3 +1,5 @@
+import threading
+import time
 from tkinter import messagebox, simpledialog
 import random as seednum
 import networkx as nx
@@ -135,12 +137,26 @@ class Draw:
                 else:
                     messagebox.showinfo("Dijkstra", f"The shortest path length is: {way[0]}\nThe Path is: {way[1]}")
 
+        def simulate_multiple_infections(speed):
+            while any(tree.health_status != HealthStatus.INFECTED for tree in forest.trees.values()):
+                forest.simulate_infection_spread()
+                G, pos, nodes = draw_graph()
+                for path in forest.paths:
+                    if path.tree1.health_status == HealthStatus.INFECTED and path.tree2.health_status != HealthStatus.INFECTED:
+                        time.sleep(path.distance * (1/speed))
+                        break
+                    elif path.tree2.health_status == HealthStatus.INFECTED and path.tree1.health_status != HealthStatus.INFECTED:
+                        time.sleep(path.distance * (1/speed))
+                        break
+            
+
 
         def spread_infection(event):
             speed = simpledialog.askinteger("Speed", "Enter tree Infection speed:")
             if speed is None: return
-
-            G, pos, nodes = draw_graph()
+            
+            thread = threading.Thread(target=simulate_multiple_infections,args=(speed,))
+            thread.start()
                 
 
 
