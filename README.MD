@@ -32,15 +32,19 @@ The code uses the NetworkX and Matplotlib libraries to create a graphical repres
 - Finally, outputs the corresponding undirected graph of the forest.
 
 ## Infection Spread Simulation
-We have successfully implemented the simulation of infection spread. This functionality is based on the Breadth-First Search (BFS) algorithm, accurately modeling how infection spreads among trees in a forest.
 
-- The simulation begins by identifying all initially infected trees. These trees serve as the starting points for the spread.
-- Subsequently, the system enters a loop where each iteration represents one cycle of infection propagation.
-- We defined an `Infect` class that includes a static method `spread_infection`, which takes a forest object as a parameter. This method performs the following tasks:
-  1. **Initialization**: Records the number of propagation cycles and identifies all initially infected trees, storing their IDs in a queue. It also creates a set to track visited trees.
-  2. **Breadth-First Search**: Uses a queue to simulate the BFS process. During each propagation cycle, the system checks each tree in the queue and traverses all its connected paths to find adjacent trees that haven't been visited.
-  3. **Infection Spread**: For each adjacent tree that hasn't been visited and isn't already infected (`INFECTED`), the system updates its health status to `INFECTED` and adds it to the queue for the next propagation cycle.
-  4. **Output Results**: After completing all propagation cycles, the system outputs the final state of the forest, including the health status of each tree.
+We successfully implemented an infection spread simulation feature. This feature, based on the Breadth-First Search (BFS) algorithm, can accurately simulate the spread of infection among trees in a forest.
+
+In each step of the simulation, it starts by identifying all currently infected trees. These trees become the starting points for the spread process. Initially, an infection queue is created and populated with the IDs of the initially infected trees. At the same time, a set is created to track visited trees, and the propagation rounds are initialized.
+
+During the simulation, if the queue becomes empty, indicating that there are no more trees to process, the forest is rechecked to determine if there are any previously undiscovered sources of infection. If new infected trees are found, the simulation continues.
+
+In each propagation round, the simulation will:
+- Increase the propagation round count and print the current round.
+- Remove a tree's ID from the queue and check all paths connected to it, looking for unvisited neighboring trees.
+- If the neighboring trees are not yet infected, update their status to infected, add them to the visited set, and place them in the queue for the next round of processing.
+
+The code uses class attributes to store the queue, the visited set, and the propagation rounds used during the process. This ensures continuity of state across multiple calls to the `spread_infection` method. If new sources of infection are discovered during the simulation, the propagation process is re-triggered to ensure all infections are identified and processed. If the queue is still empty at the end of a propagation round, it indicates that there are no more trees to process, and the simulation ends.
 
 ## Path Finding
 This code implements Dijkstra's algorithm to calculate the shortest path between a given start tree and an end tree. By initializing the distances of all nodes to infinity and setting the distance of the start tree to 0, the algorithm uses a priority queue to progressively select the node with the current shortest distance and update the distances and parent nodes of its neighboring nodes.
