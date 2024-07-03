@@ -6,7 +6,7 @@ from tkinter import messagebox, simpledialog
 import random as seednum
 import networkx as nx
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button
+from matplotlib.widgets import Button,CheckButtons
 from Forest_Management_System.entity.Health_status import HealthStatus
 from Forest_Management_System.entity.Path import Path
 from Forest_Management_System.entity.Tree import Tree
@@ -16,7 +16,7 @@ class Draw:
     def draw(forest):
         global seeds
         seeds=0
-        def draw_graph():
+        def draw_graph(mode):
             global seeds
             if seeds==0 :
                 seeds = seednum.randint(1, 1000000)
@@ -26,22 +26,24 @@ class Draw:
             for tree_id, tree in forest.trees.items():
                 G.add_node(tree_id, tree=tree)
             for path in forest.paths:
-                G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=1/path.distance)
+                if mode==1: G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=path.distance)
+                else: G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=1/path.distance)
             print(f"Now Graph Seed:{seeds}")
-            pos = nx.spring_layout(G,seed=seeds, iterations=20)
+            
 
 
 #  Strict layout code. If you sacrifice visualization for rigor, use this code
-#
-#           pos = nx.kamada_kawai_layout(G, weight='weight')
-#            for (u, v, d) in G.edges(data=True):
-#                distance = d['weight']
-#                pos_u = pos[u]
-#                pos_v = pos[v]
-#                current_distance = np.linalg.norm(pos_u - pos_v)
-#                scale_factor = distance / current_distance
-#                new_pos_v = pos_u + (pos_v - pos_u) * scale_factor
-#                pos[v] = new_pos_v
+            if mode==1:
+                pos = nx.kamada_kawai_layout(G, weight='weight')
+                for (u, v, d) in G.edges(data=True):
+                    distance = d['weight']
+                    pos_u = pos[u]
+                    pos_v = pos[v]
+                    current_distance = np.linalg.norm(pos_u - pos_v)
+                    scale_factor = distance / current_distance
+                    pos[v] = pos[u] + (pos_v - pos_u) * scale_factor
+            else: pos = nx.spring_layout(G,seed=seeds, iterations=20)
+
 
 
             health_color_map = {
@@ -92,7 +94,7 @@ class Draw:
         fig, ax = plt.subplots(figsize=(12, 7))
         plt.subplots_adjust(bottom=0.15)
         fig.canvas.manager.set_window_title('Forest Management System')
-        G, pos, nodes = draw_graph()
+        G, pos, nodes = draw_graph(mode=0)
 
         annot = ax.annotate("", xy=(0,0), xytext=(20,20),
                             textcoords="offset points",
@@ -115,14 +117,14 @@ class Draw:
                 health_status_enum = HealthStatus[health_status.upper()]
                 tree = Tree(tree_id, species, age, health_status_enum)
                 forest.add_tree(tree)
-                G, pos, nodes = draw_graph()
+                G, pos, nodes = draw_graph(check_buttons.get_status()[0])
                 messagebox.showinfo("Success", "Tree added successfully!")
 
         def remove_tree(event):
             tree_id = simpledialog.askinteger("Remove", "Enter tree ID to remove:")
             if tree_id is not None:
                 forest.remove_tree(tree_id)
-                G, pos, nodes = draw_graph()
+                G, pos, nodes = draw_graph(check_buttons.get_status()[0])
                 messagebox.showinfo("Success", "Tree removed successfully!")
 
         def add_path(event):
@@ -133,7 +135,7 @@ class Draw:
             distance = simpledialog.askinteger("Path", "Enter distance:")
             if tree_id1 and distance and tree_id2:
                 forest.add_path(tree_id1, tree_id2, distance)
-                G, pos, nodes = draw_graph()
+                G, pos, nodes = draw_graph(check_buttons.get_status()[0])
                 messagebox.showinfo("Success", "Path added successfully!")
 
         def remove_path(event):
@@ -142,7 +144,7 @@ class Draw:
             tree_id2 = simpledialog.askinteger("Path", "Enter tree ID2:")
             if tree_id1 and tree_id2:
                 forest.remove_path(tree_id1, tree_id2)
-                G, pos, nodes = draw_graph()
+                G, pos, nodes = draw_graph(check_buttons.get_status()[0])
                 messagebox.showinfo("Success", "Path removed successfully!")
 
         def pathfinding(event):
@@ -160,7 +162,7 @@ class Draw:
             forest_back=copy.deepcopy(forest.trees)
             while any(tree.health_status != HealthStatus.INFECTED for tree in forest.trees.values()):
                 forest.simulate_infection_spread()
-                G, pos, nodes = draw_graph()
+                G, pos, nodes = draw_graph(check_buttons.get_status()[0])
                 for path in forest.paths:
                     if path.tree1.health_status == HealthStatus.INFECTED and path.tree2.health_status != HealthStatus.INFECTED:
                         time.sleep(path.distance * (1/speed))
@@ -171,7 +173,7 @@ class Draw:
             forest.trees=forest_back
             print(forest_back)
             time.sleep(3)
-            G, pos, nodes = draw_graph()
+            G, pos, nodes = draw_graph(check_buttons.get_status()[0])
 
 
         def spread_infection(event):
@@ -192,15 +194,33 @@ class Draw:
                 
             messagebox.showinfo("Conservation Areas", text)
 
+        def search_tree(event=None):
+            search_species = simpledialog.askstring("Search", "Enter tree species:")
+            if search_species is not None:
+                found_trees = [tree for tree in forest.trees.values() if tree.species == search_species]
+                if found_trees:
+                    for tree in found_trees:
+                        messagebox.showinfo("Search Result", f"Tree ID: {tree.tree_id}\nSpecies: {tree.species}\nAge: {tree.age}\nHealth: {tree.health_status.name}")
+                else:
+                    messagebox.showinfo("Search Result", "No trees found with the specified species.")
+
+        def toggle_option(event):
+                if (check_buttons.get_status()[0]==True):
+                    G, pos, nodes = draw_graph(mode=1)
+                else: G, pos, nodes = draw_graph(mode=0)
 
         def refresh(event):
             global seeds
             seeds=0
-            G, pos, nodes = draw_graph()
+            G, pos, nodes = draw_graph(check_buttons.get_status()[0])
             
 
-        ax_conservation_areas = plt.axes([0.14, 0.91, 0.13, 0.05])
-
+        ax_search = plt.axes([0.14, 0.91, 0.08, 0.05])
+        ax_conservation_areas = plt.axes([0.24, 0.91, 0.13, 0.05])
+        ax_path_file = plt.axes([0.39, 0.91, 0.13, 0.05])
+        ax_tree_file = plt.axes([0.54, 0.91, 0.13, 0.05])
+        ax_toggle = plt.axes([0.75, 0.91, 0.11, 0.05])  
+        
 
         ax_add_tree = plt.axes([0.14, 0.05, 0.08, 0.05])
         ax_remove_tree = plt.axes([0.24, 0.05, 0.08, 0.05])
@@ -211,6 +231,12 @@ class Draw:
         ax_spread_infection = plt.axes([0.75, 0.05, 0.13, 0.05])
 
 
+        btn_search = Button(ax_search, 'Search')
+        btn_conservation_areas = Button(ax_conservation_areas, ' Conservation Areas')
+        btn_path_file = Button(ax_path_file, 'Add Path From File')
+        btn_tree_file = Button(ax_tree_file, 'Add Tree From File')
+        check_buttons = CheckButtons(ax_toggle, ['Strict Mode'], [False]) 
+
         btn_add_tree = Button(ax_add_tree, 'Add Tree')
         btn_remove_tree = Button(ax_remove_tree, 'Remove Tree')
         btn_addpath = Button(ax_add_path, 'Add Path')
@@ -218,7 +244,13 @@ class Draw:
         btn_refresh = Button(ax_refresh, 'Refresh')
         btn_pathfinding = Button(ax_path_finding, 'Path Finding')
         btn_spread_infection = Button(ax_spread_infection, 'Infection Simulation')
-        btn_conservation_areas = Button(ax_conservation_areas, ' Conservation Areas')
+
+
+        btn_search.on_clicked(search_tree)
+        btn_conservation_areas.on_clicked(conservation_areas)
+        btn_path_file.on_clicked(refresh)
+        btn_tree_file.on_clicked(refresh)
+        check_buttons.on_clicked(toggle_option)
 
         btn_add_tree.on_clicked(add_tree)
         btn_remove_tree.on_clicked(remove_tree)
@@ -227,7 +259,7 @@ class Draw:
         btn_refresh.on_clicked(refresh)
         btn_pathfinding.on_clicked(pathfinding)
         btn_spread_infection.on_clicked(spread_infection)
-        btn_conservation_areas.on_clicked(conservation_areas)
+        
 
         def on_scroll(event):
             scale_factor = 1.1
