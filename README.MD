@@ -17,7 +17,8 @@ Terminal:
 # Forest Management System Mid-term Report
 
 ## Installation Guide
-1. **从**
+1. **从main分支当中下载全部源文件**
+
 
 
 ## Primary Data Structures
