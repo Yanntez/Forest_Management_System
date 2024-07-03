@@ -1,5 +1,7 @@
+import copy
 import threading
 import time
+import numpy as np
 from tkinter import messagebox, simpledialog
 import random as seednum
 import networkx as nx
@@ -17,16 +19,30 @@ class Draw:
         def draw_graph():
             global seeds
             if seeds==0 :
-                seeds = seednum.randint(1, 100000)
+                seeds = seednum.randint(1, 1000000)
 
             ax.clear()
             G = nx.Graph()
             for tree_id, tree in forest.trees.items():
                 G.add_node(tree_id, tree=tree)
             for path in forest.paths:
-                G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=path.distance)
-            print(seeds)
+                G.add_edge(path.tree1.tree_id, path.tree2.tree_id, weight=1/path.distance)
+            print(f"Now Graph Seed:{seeds}")
             pos = nx.spring_layout(G,seed=seeds, iterations=20)
+
+
+#  Strict layout code. If you sacrifice visualization for rigor, use this code
+#
+#           pos = nx.kamada_kawai_layout(G, weight='weight')
+#            for (u, v, d) in G.edges(data=True):
+#                distance = d['weight']
+#                pos_u = pos[u]
+#                pos_v = pos[v]
+#                current_distance = np.linalg.norm(pos_u - pos_v)
+#                scale_factor = distance / current_distance
+#                new_pos_v = pos_u + (pos_v - pos_u) * scale_factor
+#                pos[v] = new_pos_v
+
 
             health_color_map = {
                 HealthStatus.HEALTHY: 'green',
@@ -42,7 +58,8 @@ class Draw:
             edges = nx.draw_networkx_edges(G, pos, ax=ax, edge_color='k')
             labels = nx.draw_networkx_labels(G, pos, ax=ax, font_size=10, font_weight='bold')
 
-            edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
+            edge_labels = {(path.tree1.tree_id, path.tree2.tree_id): path.distance for path in forest.paths}
+            #edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
             nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
 
             fig.canvas.draw_idle()
@@ -138,6 +155,7 @@ class Draw:
                     messagebox.showinfo("Dijkstra", f"The shortest path length is: {way[0]}\nThe Path is: {way[1]}")
 
         def simulate_multiple_infections(speed):
+            forest_back=copy.deepcopy(forest.trees)
             while any(tree.health_status != HealthStatus.INFECTED for tree in forest.trees.values()):
                 forest.simulate_infection_spread()
                 G, pos, nodes = draw_graph()
@@ -148,13 +166,15 @@ class Draw:
                     elif path.tree2.health_status == HealthStatus.INFECTED and path.tree1.health_status != HealthStatus.INFECTED:
                         time.sleep(path.distance * (1/speed))
                         break
-            
+            forest.trees=forest_back
+            print(forest_back)
+            time.sleep(3)
+            G, pos, nodes = draw_graph()
 
 
         def spread_infection(event):
             speed = simpledialog.askinteger("Speed", "Enter tree Infection speed:")
             if speed is None: return
-            
             thread = threading.Thread(target=simulate_multiple_infections,args=(speed,))
             thread.start()
                 

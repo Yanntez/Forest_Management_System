@@ -10,7 +10,7 @@ paths_file = 'assets/forest_management_dataset-paths.csv'
 forest = Forest()
 
 load_dataset(forest, trees_file, paths_file)
-
+print("================================================")
 # Display the forest
 print(forest)
 print("================================================")
