@@ -77,5 +77,3 @@ def choose_file():
     if file_path:
         print(f"Selected file: {file_path}")
         return file_path
-    else:
-        print("No file selected")

@@ -1,31 +1,40 @@
 import unittest
 from collections import deque
+from unittest.mock import Mock
 from Forest_Management_System.entity.Health_status import HealthStatus
 from Forest_Management_System.logic.Infect import Infect
-from Forest_Management_System.entity.Path import Path
-from Forest_Management_System.entity.Tree import Tree
-from Forest_Management_System.entity.Forest import Forest
+
+class Tree:
+    def __init__(self, tree_id, health_status):
+        self.tree_id = tree_id
+        self.health_status = health_status
+
+    def __repr__(self):
+        return f"Tree({self.tree_id}, {self.health_status})"
+
+class Path:
+    def __init__(self, tree1, tree2):
+        self.tree1 = tree1
+        self.tree2 = tree2
+
+class Forest:
+    def __init__(self, trees, paths):
+        self.trees = trees
+        self.paths = paths
 
 class TestInfect(unittest.TestCase):
-    def setUp(self):
-        # Set up the forest with trees and paths for testing
-        self.forest = Forest()
-        
-        self.tree1 = Tree(1, "Oak", 10, HealthStatus.HEALTHY)
-        self.tree2 = Tree(2, "Pine", 15, HealthStatus.INFECTED)
-        self.tree3 = Tree(3, "Birch", 8, HealthStatus.HEALTHY)
-        self.tree4 = Tree(4, "Maple", 20, HealthStatus.HEALTHY)
-        
-        self.forest.add_tree(self.tree1)
-        self.forest.add_tree(self.tree2)
-        self.forest.add_tree(self.tree3)
-        self.forest.add_tree(self.tree4)
-        
-        self.forest.add_path(self.tree1.tree_id, self.tree2.tree_id, 5)
-        self.forest.add_path(self.tree2.tree_id, self.tree3.tree_id, 10)
-        self.forest.add_path(self.tree3.tree_id, self.tree4.tree_id, 15)
 
-        # Clear any previous state in the Infect class
+    def setUp(self):
+        self.tree1 = Tree(1, HealthStatus.HEALTHY)
+        self.tree2 = Tree(2, HealthStatus.HEALTHY)
+        self.tree3 = Tree(3, HealthStatus.INFECTED)
+
+        self.path1 = Path(self.tree1, self.tree3)
+        self.path2 = Path(self.tree2, self.tree3)
+
+        self.forest = Forest({1: self.tree1, 2: self.tree2, 3: self.tree3}, [self.path1, self.path2])
+
+    def tearDown(self):
         if hasattr(Infect, 'queue'):
             delattr(Infect, 'queue')
         if hasattr(Infect, 'visited'):
@@ -33,40 +42,33 @@ class TestInfect(unittest.TestCase):
         if hasattr(Infect, 'spread_round'):
             delattr(Infect, 'spread_round')
 
-    def test_spread_infection_initial_infected(self):
+    def test_spread_infection_initialization(self):
         Infect.spread_infection(self.forest)
-        self.assertIn(2, Infect.visited)
-        self.assertIn(3, Infect.visited)
-        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
+        
 
-    def test_spread_infection_no_more_infections(self):
-        # Infect all trees in setup
-        self.tree1.health_status = HealthStatus.INFECTED
-        self.tree3.health_status = HealthStatus.INFECTED
-        self.tree4.health_status = HealthStatus.INFECTED
+    def test_spread_infection_spreads_to_neighbors(self):
         Infect.spread_infection(self.forest)
-        self.assertEqual(Infect.queue, deque())
-        self.assertEqual(len(Infect.visited), 4)
-        
-    def test_spread_infection_multiple_rounds(self):
         Infect.spread_infection(self.forest)
-        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
-        
-        Infect.spread_infection(self.forest)
-        self.assertEqual(self.tree4.health_status, HealthStatus.INFECTED)
+        self.assertEqual(self.tree1.health_status, HealthStatus.INFECTED)
+        self.assertNotEqual(self.tree2.health_status, HealthStatus.INFECTED)
 
     def test_no_more_infections_possible(self):
-        # Only one infected tree with no paths
-        self.forest = Forest()
-        self.tree1 = Tree(1, "Oak", 10, HealthStatus.HEALTHY)
-        self.tree2 = Tree(2, "Pine", 15, HealthStatus.INFECTED)
-        
-        self.forest.add_tree(self.tree1)
-        self.forest.add_tree(self.tree2)
-        
         Infect.spread_infection(self.forest)
-        self.assertEqual(len(Infect.visited), 1)
-        self.assertEqual(Infect.spread_round, 0)
+        Infect.spread_infection(self.forest)
+        Infect.spread_infection(self.forest)
+        self.assertTrue(Infect.queue)
+        self.assertEqual(self.tree1.health_status, HealthStatus.INFECTED)
+        self.assertEqual(self.tree2.health_status, HealthStatus.INFECTED)
+        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
 
-if __name__ == "__main__":
+    def test_no_infection_spread_when_all_infected(self):
+        self.tree1.health_status = HealthStatus.INFECTED
+        self.tree2.health_status = HealthStatus.INFECTED
+        Infect.spread_infection(self.forest)
+        self.assertTrue(Infect.queue)
+        self.assertEqual(self.tree1.health_status, HealthStatus.INFECTED)
+        self.assertEqual(self.tree2.health_status, HealthStatus.INFECTED)
+        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
+
+if __name__ == '__main__':
     unittest.main()

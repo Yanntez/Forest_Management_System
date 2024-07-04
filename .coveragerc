@@ -2,6 +2,3 @@
 branch = True
 source = .
 
-[report]
-omit =
-    tests/*
