@@ -1,17 +1,17 @@
 # Forest_Management_System
 Efrei course assignment
 
-##  Display
+## Display
 2024/7/3 version
 You can check our feature design sources on this website
 [Project 1 - Forest Management System](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
 All of these functions have been implemented, and some of them have not been reflected in the interface yet. Only console output is supported, and we will improve it in the next few days.
 
-##Main Interface:
+## Main Interface:
 
 ![1](image-0.png)
 
-##Terminal:
+## Terminal:
 
 ![2](image-1.png)
 
