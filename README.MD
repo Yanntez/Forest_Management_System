@@ -17,7 +17,6 @@ Terminal:
 
 ## Installation Guide 
 1. Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.
-Sure, here's the translated and slightly modified text in English:
 
 2. Open this folder in VSCode and install the Python extension (recommended version: Python 3.10+).
 
