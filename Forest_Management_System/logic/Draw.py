@@ -10,6 +10,7 @@ from matplotlib.widgets import Button,CheckButtons
 from Forest_Management_System.entity.Health_status import HealthStatus
 from Forest_Management_System.entity.Path import Path
 from Forest_Management_System.entity.Tree import Tree
+from Forest_Management_System.utils import choose_file,load_dataset
 
 class Draw:
     @staticmethod
@@ -209,6 +210,18 @@ class Draw:
                     G, pos, nodes = draw_graph(mode=1)
                 else: G, pos, nodes = draw_graph(mode=0)
 
+
+        def path_file(event):
+            file=choose_file()
+            load_dataset(forest,None,file)
+            G, pos, nodes = draw_graph(check_buttons.get_status()[0])
+        
+        
+        def tree_file(event):
+            file=choose_file()
+            load_dataset(forest,file,None)
+            G, pos, nodes = draw_graph(check_buttons.get_status()[0])
+
         def refresh(event):
             global seeds
             seeds=0
@@ -248,8 +261,8 @@ class Draw:
 
         btn_search.on_clicked(search_tree)
         btn_conservation_areas.on_clicked(conservation_areas)
-        btn_path_file.on_clicked(refresh)
-        btn_tree_file.on_clicked(refresh)
+        btn_path_file.on_clicked(path_file)
+        btn_tree_file.on_clicked(tree_file)
         check_buttons.on_clicked(toggle_option)
 
         btn_add_tree.on_clicked(add_tree)
