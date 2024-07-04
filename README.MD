@@ -93,7 +93,7 @@ Additionally, the graphical interface includes the following features:
 - **Zoom and Pan**: Implements zooming and panning through mouse wheel events to enhance user experience.
 - **Strict Mode**: After enabling strict mode, the diagram will be drawn as accurately as possible according to the actual path lengths, with flexible adjustments in case of conflicts. (**Note:** Enabling this mode may reduce the visibility of the diagram.)
 
-**Manifested**:
+**Strict Mode Manifestation**:
 
 ![4](image-2.png)
 
