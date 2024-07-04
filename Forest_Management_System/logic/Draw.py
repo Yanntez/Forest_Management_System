@@ -33,7 +33,7 @@ class Draw:
             
 
 
-#  Strict layout code. If you sacrifice visualization for rigor, use this code
+            #  Strict layout code. If you sacrifice visualization for rigor, use this code
             if mode==1:
                 pos = nx.kamada_kawai_layout(G, weight='weight')
                 for (u, v, d) in G.edges(data=True):
@@ -227,6 +227,7 @@ class Draw:
             seeds=0
             G, pos, nodes = draw_graph(check_buttons.get_status()[0])
             
+            
 
         ax_search = plt.axes([0.14, 0.91, 0.08, 0.05])
         ax_conservation_areas = plt.axes([0.24, 0.91, 0.13, 0.05])
@@ -283,6 +284,7 @@ class Draw:
             fig.canvas.draw_idle()
 
         fig.canvas.mpl_connect('scroll_event', on_scroll)
+        
         fig.canvas.mpl_connect('motion_notify_event', hover)
 
         plt.show()

@@ -1,34 +1,72 @@
 import unittest
 from collections import deque
 from Forest_Management_System.entity.Health_status import HealthStatus
-from unittest.mock import MagicMock
-from Forest_Management_System.logic.Infect import Infect  # 假设您的实际文件名为 Infect.py，替换为实际的导入路径
+from Forest_Management_System.logic.Infect import Infect
+from Forest_Management_System.entity.Path import Path
+from Forest_Management_System.entity.Tree import Tree
+from Forest_Management_System.entity.Forest import Forest
 
 class TestInfect(unittest.TestCase):
-
     def setUp(self):
-        # 创建一个模拟的森林对象
-        self.mock_forest = MagicMock()
-        self.mock_forest.trees = {
-            1: MagicMock(tree_id=1, health_status=HealthStatus.HEALTHY),
-            2: MagicMock(tree_id=2, health_status=HealthStatus.INFECTED),
-            3: MagicMock(tree_id=3, health_status=HealthStatus.HEALTHY),
-            # 添加更多树木
-        }
-        self.mock_forest.paths = [
-            MagicMock(tree1=self.mock_forest.trees[1], tree2=self.mock_forest.trees[2]),
-            MagicMock(tree1=self.mock_forest.trees[2], tree2=self.mock_forest.trees[3]),
-            # 添加更多路径
-        ]
+        # Set up the forest with trees and paths for testing
+        self.forest = Forest()
+        
+        self.tree1 = Tree(1, "Oak", 10, HealthStatus.HEALTHY)
+        self.tree2 = Tree(2, "Pine", 15, HealthStatus.INFECTED)
+        self.tree3 = Tree(3, "Birch", 8, HealthStatus.HEALTHY)
+        self.tree4 = Tree(4, "Maple", 20, HealthStatus.HEALTHY)
+        
+        self.forest.add_tree(self.tree1)
+        self.forest.add_tree(self.tree2)
+        self.forest.add_tree(self.tree3)
+        self.forest.add_tree(self.tree4)
+        
+        self.forest.add_path(self.tree1.tree_id, self.tree2.tree_id, 5)
+        self.forest.add_path(self.tree2.tree_id, self.tree3.tree_id, 10)
+        self.forest.add_path(self.tree3.tree_id, self.tree4.tree_id, 15)
 
-    def test_spread_infection(self):
-        infect_simulation = Infect()
+        # Clear any previous state in the Infect class
+        if hasattr(Infect, 'queue'):
+            delattr(Infect, 'queue')
+        if hasattr(Infect, 'visited'):
+            delattr(Infect, 'visited')
+        if hasattr(Infect, 'spread_round'):
+            delattr(Infect, 'spread_round')
 
-        # 在模拟森林对象上调用 spread_infection 方法
-        infect_simulation.spread_infection(self.mock_forest)
+    def test_spread_infection_initial_infected(self):
+        Infect.spread_infection(self.forest)
+        self.assertIn(2, Infect.visited)
+        self.assertIn(3, Infect.visited)
+        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
 
-        # TODO: 添加适当的断言来验证预期的感染传播结果
-        # 例如，检查传染后树木的最终状态是否符合预期
+    def test_spread_infection_no_more_infections(self):
+        # Infect all trees in setup
+        self.tree1.health_status = HealthStatus.INFECTED
+        self.tree3.health_status = HealthStatus.INFECTED
+        self.tree4.health_status = HealthStatus.INFECTED
+        Infect.spread_infection(self.forest)
+        self.assertEqual(Infect.queue, deque())
+        self.assertEqual(len(Infect.visited), 4)
+        
+    def test_spread_infection_multiple_rounds(self):
+        Infect.spread_infection(self.forest)
+        self.assertEqual(self.tree3.health_status, HealthStatus.INFECTED)
+        
+        Infect.spread_infection(self.forest)
+        self.assertEqual(self.tree4.health_status, HealthStatus.INFECTED)
 
-if __name__ == '__main__':
+    def test_no_more_infections_possible(self):
+        # Only one infected tree with no paths
+        self.forest = Forest()
+        self.tree1 = Tree(1, "Oak", 10, HealthStatus.HEALTHY)
+        self.tree2 = Tree(2, "Pine", 15, HealthStatus.INFECTED)
+        
+        self.forest.add_tree(self.tree1)
+        self.forest.add_tree(self.tree2)
+        
+        Infect.spread_infection(self.forest)
+        self.assertEqual(len(Infect.visited), 1)
+        self.assertEqual(Infect.spread_round, 0)
+
+if __name__ == "__main__":
     unittest.main()

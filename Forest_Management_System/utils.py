@@ -13,6 +13,7 @@ def health_status_mapping(status_str):
     return mapping.get(status_str.upper(), None)
 
 def load_dataset(forest, trees_file, paths_file):
+    print("load")
     tree_fieldnames = ['tree_id', 'species', 'age', 'health_status']
     path_fieldnames = ['tree_1', 'tree_2', 'distance']
     
