@@ -14,13 +14,13 @@ Terminal:
 
 ![2](image-1.png)
 
-
 ## Installation Guide 
 1. Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.
 
 2. Open this folder in VSCode and install the Python extension (recommended version: Python 3.10+).
 
 3. Download the required libraries to run the program. Specifically:
+
    ① Install the necessary libraries `networkx` and `matplotlib`. If needed, use the following pip command in the terminal:
    ```
    pip install networkx matplotlib
@@ -74,7 +74,7 @@ This section of code is a GUI application for a forest management system, allowi
 
 Eventually Manifested:
 
-![3](simulate.gif)
+![3](simulate2.gif)
 
 Additionally, the graphical interface includes the following features:
 
@@ -82,6 +82,11 @@ Additionally, the graphical interface includes the following features:
 - **Refresh View**: Allows users to refresh the graphical view to show the latest state of the forest.
 - **Zoom and Pan**: Implements zooming and panning through mouse wheel events to enhance user experience.
 
-## Future Plans
+### Challenges & Overcoming Challenges
 
-Expand extra features, additional functionalities such as data analysis, graphical interaction, visualization of infection simulations, etc.
+**Infection Simulation:**
+
+During the infection spread, the infection queue is used to manage the spread process. In each round of infection, if an uninfected tree is found adjacent to the currently processed infected tree, the ID of this uninfected tree will be added to the infection queue. This leads to a challenge: since the traversal and infection are processed one by one, if an infected tree has multiple adjacent uninfected trees, only the first tree in the infection queue will be infected. When processing the next infection node, if the other trees in the previous queue are not adjacent to it, they will not be infected.
+
+Therefore, we added a layer of logic: if the current infected tree detects no adjacent uninfected trees, it will perform a second check for any uninfected trees. If there are any, it will backtrack the infection queue to ensure the infection process is completed comprehensively.
+
