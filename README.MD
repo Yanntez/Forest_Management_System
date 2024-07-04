@@ -84,7 +84,7 @@ Eventually Manifested:
 5. **Conservation Area**: After clicking the `Conservation Area` button, the program will group healthy and interconnected trees into multiple protected areas and display them through a dialog box.
 
 6. **Add Paths and Trees from File**:
-After clicking ·Add Path from File· and "Add Tree from File," users can select and import CSV files to add paths and trees, which will be displayed on the current diagram.
+After clicking `Add Path from File` and `Add Tree from File` buttons, users can select and import CSV files to add paths and trees, which will be displayed on the current diagram.
 
 Additionally, the graphical interface includes the following features:
 
