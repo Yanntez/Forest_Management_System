@@ -3,7 +3,7 @@ from heapq import heappush, heappop
 
 from Forest_Management_System.entity.Tree import Tree
 from Forest_Management_System.entity.Path import Path
-from entity.Health_status import HealthStatus  
+from Forest_Management_System.entity.Health_status import HealthStatus  
 
 class TestPath(unittest.TestCase):
     

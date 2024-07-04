@@ -1,5 +1,5 @@
 import unittest
-from entity.Health_status import HealthStatus
+from Forest_Management_System.entity.Health_status import HealthStatus
 from Forest_Management_System.entity.Tree import Tree
 from Forest_Management_System.entity.Path import  Path
 from Forest_Management_System.logic.Infect import Infect 
