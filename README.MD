@@ -63,6 +63,7 @@ This section of code is a GUI application for a forest management system, allowi
 3. **Infection Spread Simulation**: Simulate the spread of infection in a forest using multithreading, allowing the user to specify the infection speed. After the infection starts, the program will perform a `Breadth-First-Search` infection at the speed specified by the user. When the simulation ends, the final infection state will be maintained for a short period before the image is restored.
 
 Eventually Manifested:
+
 ![3](simulate.gif)
 
 Additionally, the graphical interface includes the following features:
