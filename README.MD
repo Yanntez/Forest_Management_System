@@ -1,23 +1,34 @@
 # Forest_Management_System
 Efrei course assignment
 
-#  Display
+##  Display
 2024/7/3 version
 You can check our feature design sources on this website
 [Project 1 - Forest Management System](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
 All of these functions have been implemented, and some of them have not been reflected in the interface yet. Only console output is supported, and we will improve it in the next few days.
 
 Main Interface:
-![2024/6/28 version](image.png)
+![1](image-0.png)
 
 Terminal:
 
 ![2](image-1.png)
 
-# Forest Management System Mid-term Report
 
-## Installation Guide
-1. **Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.**
+## Installation Guide 
+1. Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.
+Sure, here's the translated and slightly modified text in English:
+
+2. Open this folder in VSCode and install the Python extension (recommended version: Python 3.10+).
+
+3. Download the required libraries to run the program. Specifically:
+   ① Install the necessary libraries `networkx` and `matplotlib`. If needed, use the following pip command in the terminal:
+   ```
+   pip install networkx matplotlib
+   ```
+   ② Other libraries (most are included with Python, but if any are missing, you can download them): `copy`, `threading`, `time`, `numpy` (included in Python 3.7+), `tkinter`, `enum`, `heapq`, `collections`.
+
+4. Start the program by running the main file.
 
 
 
