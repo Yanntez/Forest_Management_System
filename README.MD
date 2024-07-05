@@ -11,10 +11,6 @@ All of these functions have been implemented, and some of them have not been ref
 
 ![1](image-0.png)
 
-## Terminal:
-
-![2](image-1.png)
-
 ## Installation Guide 
 
 1. Download all the source files from the main branch of the [Forest_Management_System](https://github.com/Yanntez/Forest_Management_System) repository.
@@ -36,9 +32,13 @@ All of these functions have been implemented, and some of them have not been ref
 
 We utilize Python classes to represent individual trees in a forest and the paths between them. Each tree possesses attributes such as tree ID, species, age, and health status. The health status is defined using an enumeration type `HealthStatus`, ensuring the validity and consistency of status values.
 
-- **Tree Node Representation**: Implemented with the `Tree` class, which includes methods to ensure `health_status` is an instance of the `HealthStatus` enumeration.
-- **Path Representation**: The `Path` class represents weighted undirected paths between two trees in the forest.
-- **Graph Representation**: The `Forest` class implements the data structure of the forest as an undirected graph, containing a collection of trees and a set of paths connecting these trees.
+1. **Tree Node Representation**: Implemented with the `Tree` class, which includes attributes such as tree ID, species, age, and health status, ensuring `health_status` is an instance of the `HealthStatus` enumeration.
+
+2. **Health Status Representation**: Defined using the `HealthStatus` enumeration class to ensure the validity and consistency of health status values.
+
+3. **Path Representation**: The `Path` class represents weighted undirected paths between two trees in the forest.
+
+4. **Graph Representation**: The `Forest` class implements the data structure of the forest as an undirected graph, containing a collection of trees and a set of paths connecting these trees. It provides functionalities for adding and removing trees and paths, updating path distances, and updating the health status of trees.
 
 ## Identifying Conservation Areas
 
@@ -92,11 +92,11 @@ Additionally, the graphical interface includes the following features:
 - **Refresh View**: Allows users to refresh the graphical view to show the latest state of the forest.
 - **Zoom and Pan**: Implements zooming and panning through mouse wheel events to enhance user experience.
 - **Strict Mode**: After enabling strict mode, the diagram will be drawn as accurately as possible according to the actual path lengths, with flexible adjustments in case of conflicts. (**Note:** Enabling this mode may reduce the visibility of the diagram.)
+- **Interactive operation**: When the user hovers the mouse over a tree node, it will display the tree's species, age, and health information.
 
 **Strict Mode Manifestation**:
 
 ![4](image-2.png)
-
 
 ### Challenges & Overcoming
 
