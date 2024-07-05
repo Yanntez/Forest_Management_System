@@ -140,13 +140,20 @@ Additionally, the graphical interface includes the following features:
 
 ![4](image-2.png)
 
-### Challenges & Overcoming
+## Challenges & Overcoming
 
 **Infection Simulation:**
 
 During the infection spread, the infection queue is used to manage the spread process. In each round of infection, if an uninfected tree is found adjacent to the currently processed infected tree, the ID of this uninfected tree will be added to the infection queue. This leads to a challenge: since the traversal and infection are processed one by one, if an infected tree has multiple adjacent uninfected trees, only the first tree in the infection queue will be infected. When processing the next infection node, if the other trees in the previous queue are not adjacent to it, they will not be infected.
 
 Therefore, we added a layer of logic: if the current infected tree detects no adjacent uninfected trees, it will perform a second check for any uninfected trees. If there are any, it will backtrack the infection queue to ensure the infection process is completed comprehensively.
+
+**Import Error:**
+
+We encountered issues with circular dependencies between different classes, leading to errors in our system. These issues arose from an imprudent class design. To address this, we undertook a comprehensive refactoring of the project, successfully resolving the aforementioned problems
+
+
+We encountered many issues, but through our joint efforts, they were all resolved one by one. I will not list any more.
 
 ##  Code Test Coverage
 
