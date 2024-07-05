@@ -1,12 +1,14 @@
 # Forest_Management_System
 Efrei course assignment
 
-## Display
+In this project, we will develop a forest management system to help a national park monitor and manage its forest areas more effectively. The forest will be represented as a graph, with trees as nodes and edges representing paths between them. This system will help in identifying various tree species, their health status, and managing conservation efforts.
+
+## Outline
 2024/7/3 version
 
-You can check our feature design sources on this website
+You can check our design sources on this website
 [Project 1 - Forest Management System](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
-All of these functions have been implemented, and some of them have not been reflected in the interface yet. Only console output is supported, and we will improve it in the next few days.
+All functionalities have been implemented and correctly displayed in the graphical interface. All project requirements and mid-term review suggestions have been successfully executed and improved. Testing has also been completed, and many additional features have been added.
 
 ## Design Approach
 We have an initial project design, and the tasks revolve around it. The project is mainly divided into five major parts: main, utils, logic, entity, and unittest. Adjustments might have been made according to actual situations.
