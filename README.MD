@@ -149,14 +149,11 @@ During the infection spread, the infection queue is used to manage the spread pr
 Therefore, we added a layer of logic: if the current infected tree detects no adjacent uninfected trees, it will perform a second check for any uninfected trees. If there are any, it will backtrack the infection queue to ensure the infection process is completed comprehensively.
 
 ##  Code Test Coverage
-Here is the English translation of the provided Chinese content:
-
----
 
 **Code Test Coverage**
-I believe that the focus of testing should be on the logic code. Since the `Draw` class contains a lot of UI layout code, its coverage is not very high. If we disregard the irrelevant layout code, I think the coverage rate would be more impressive.
 ![5](image-5.png)
 ![6](image-4.png)
+I believe that the focus of testing should be on the logic code. Since the `Draw` class contains a lot of UI layout code, its coverage is not very high. If we disregard the irrelevant layout code, I think the coverage rate would be more impressive.
 ![7](image-3.png)
 
 
