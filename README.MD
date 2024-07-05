@@ -3,61 +3,49 @@ Efrei course assignment
 
 ## Display
 2024/7/3 version
+
 You can check our feature design sources on this website
 [Project 1 - Forest Management System](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
 All of these functions have been implemented, and some of them have not been reflected in the interface yet. Only console output is supported, and we will improve it in the next few days.
 
-##
+## Design Approach
+We have an initial project design, and the tasks revolve around it. The project is mainly divided into five major parts: main, utils, logic, entity, and unittest. Adjustments might have been made according to actual situations.
+
 ```
 Forest_Management_System/
 │
-├── README.md            # Main readme file with project description and instructions
-├── LICENSE             # Project license file
+├── README.md            # Project overview and instructions
+├── LICENSE             # License for the project
 │
 ├── .gitignore          # Specifies intentionally untracked files to ignore
 │
-├── main.py             # Main execution script for the project
+├── main.py             # Entry point for running the application
 │
-├── requirements.txt    # List of all the project dependencies
+├── requirements.txt    # List of the project's dependencies
 │
-├── src/                # Source code directory
-│   ├── __init__.py     # Package initialization file
-│   ├── forest_management_system/ # Subpackage for the main project modules
-│   │   ├── __init__.py   # Subpackage initialization file
-│   │   ├── tree.py       # Class definition for tree nodes
-│   │   ├── path.py       # Class definition for paths between trees
-│   │   ├── forest.py     # Class definition for the forest graph
-│   │   ├── health_status.py # Enumeration for health status
-│   │   └── simulation.py # Infection spread simulation logic
-│   └── utils/           # Utility functions and classes
-│       ├── __init__.py # Utility package initialization file
-│       └── ...          # Additional utility modules as needed
+├── utils.py    # Contains helper functions and classes that support the main functionality of the application but are not central to the business logic.
 │
-├── tests/              # Test scripts and test cases
-│   ├── __init__.py     # Package initialization file for tests
-│   ├── test_tree.py    # Test cases for the Tree class
-│   ├── test_path.py    # Test cases for the Path class
-│   ├── test_forest.py  # Test cases for the Forest class
-│   └── ...             # Additional test modules as needed
+├── logic/              # Directory for business logic
+│   ├── __init__.py     # Package initialization file for logic
+│   ├── infection.py    # Logic for simulating infection spread
+│   └── Draw.py         # Logic for Graphical interface
+│   
 │
-├── docs/               # Documentation related to the project
-│   ├── index.md         # Main documentation page
-│   ├── design.md        # Documentation on the design of the project
-│   ├── user_guide.md    # User guide for using the application
-│   └── ...             # Additional documentation files as needed
+├── entity/             # Directory for data entities
+│   ├── __init__.py     # Package initialization file for entities
+│   ├── tree.py         # Definition of the Tree entity
+│   ├── path.py         # Definition of the Path entity  pathfinding algorithms like Dijkstra's
+│   ├── forest.py       # Represents the forest as a whole entity
+│   └── health_status.py # Enumeration for tree health status
 │
-├── gui/                # Graphical User Interface related code
-│   ├── __init__.py     # Package initialization file for GUI
-│   ├── main_window.py  # Code for the main GUI window
-│   ├── tree_management.py # GUI components for managing trees
-│   ├── path_finding.py # GUI components for path finding
-│   ├── infection_spread.py # GUI components for infection spread simulation
-│   └── ...            # Additional GUI modules as needed
 │
-└── data/               # Directory for any data files used by the project
-    ├── raw/            # Directory for raw data files
-    ├── processed/      # Directory for processed data files
-    └── ...             # Additional data related directories as needed
+└── tests/              # Test directory
+   ├── __init__.py     # Package initialization file for tests
+   ├── test_logic.py   # Test cases for business logic
+   ├── test_entity.py  # Test cases for entities
+   └── test_interface.py # Test cases for interfaces
+   └── ...               # Many tests
+
 ```
 ## Main Interface:
 
