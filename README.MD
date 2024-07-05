@@ -25,7 +25,7 @@ All of these functions have been implemented, and some of them have not been ref
    ```
    ② Other libraries (most are included with Python, but if any are missing, you can download them): `copy`, `threading`, `time`, `numpy` (included in Python 3.7+), `tkinter`, `enum`, `heapq`, `collections`.
 
-4. Start the program by running the main file.
+4. Start the program by running the ``main.py`` file.
 
 
 ## Primary Data Structures
