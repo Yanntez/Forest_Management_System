@@ -88,7 +88,6 @@ After clicking `Add Path from File` and `Add Tree from File` buttons, users can 
 
 Additionally, the graphical interface includes the following features:
 
-- **Interactive Annotations**: Displays detailed information about a tree when the user hovers the mouse over it.
 - **Refresh View**: Allows users to refresh the graphical view to show the latest state of the forest.
 - **Zoom and Pan**: Implements zooming and panning through mouse wheel events to enhance user experience.
 - **Strict Mode**: After enabling strict mode, the diagram will be drawn as accurately as possible according to the actual path lengths, with flexible adjustments in case of conflicts. (**Note:** Enabling this mode may reduce the visibility of the diagram.)
