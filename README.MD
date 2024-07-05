@@ -9,6 +9,7 @@ In this project, we will develop a forest management system to help a national p
 You can check our design sources on this website
 [Project 1 - Forest Management System](https://stealth-jodhpur-ff1.notion.site/Project-1-Forest-Management-System-f9f6a728bf814a8ea2b938bd10cf5993)
 All functionalities have been implemented and correctly displayed in the graphical interface. All project requirements and mid-term review suggestions have been successfully executed and improved. Testing has also been completed, and many additional features have been added.
+We apologize if some of the English expressions in this project are difficult to understand, as our proficiency in English is limited.
 
 ## Design Approach
 We have an initial project design, and the tasks revolve around it. The project is mainly divided into five major parts: main, utils, logic, entity, and unittest. Adjustments might have been made according to actual situations.
@@ -146,3 +147,18 @@ Additionally, the graphical interface includes the following features:
 During the infection spread, the infection queue is used to manage the spread process. In each round of infection, if an uninfected tree is found adjacent to the currently processed infected tree, the ID of this uninfected tree will be added to the infection queue. This leads to a challenge: since the traversal and infection are processed one by one, if an infected tree has multiple adjacent uninfected trees, only the first tree in the infection queue will be infected. When processing the next infection node, if the other trees in the previous queue are not adjacent to it, they will not be infected.
 
 Therefore, we added a layer of logic: if the current infected tree detects no adjacent uninfected trees, it will perform a second check for any uninfected trees. If there are any, it will backtrack the infection queue to ensure the infection process is completed comprehensively.
+
+##  Code Test Coverage
+Here is the English translation of the provided Chinese content:
+
+---
+
+**Code Test Coverage**
+I believe that the focus of testing should be on the logic code. Since the `Draw` class contains a lot of UI layout code, its coverage is not very high. If we disregard the irrelevant layout code, I think the coverage rate would be more impressive.
+![5](image-5.png)
+![6](image-4.png)
+![7](image-3.png)
+
+
+## Future
+Despite the project meeting basic requirements, there is still much room for improvement. If given the opportunity for further development, we will focus on enhancing code robustness, reducing potential bugs caused by user input, increasing code reusability, and improving operational efficiency.
